@@ -12,21 +12,20 @@ export const App = () => {
   const [popout, setPopout] = useState(<ScreenSpinner />);
 
   useEffect(() => {
-    // async function fetchData() {
-    //   const user = await bridge.send('VKWebAppGetUserInfo');
-    //   setUser(user);
-    //   setPopout(null);
-    // }
     async function fetchData() {
-      // const user = await bridge.send('VKWebAppGetUserInfo');
-      const user = {
-        id: 123456789,
-        first_name: 'Иван',
-        last_name: 'Иванов',
-        city: { title: 'Москва' },
-        photo_200: 'https://vk.com/images/camera_200.png',
-      };
-      setUser(user);
+      // try {
+      //   const user = await bridge.send('VKWebAppGetUserInfo');
+      //   setUser(user);
+      // } catch (error) {
+        // Если не удалось получить данные от ВК — используем фейкового пользователя
+        setUser({
+          id: 123456789,
+          first_name: 'Иван',
+          last_name: 'Иванов',
+          city: { title: 'Москва' },
+          photo_200: 'https://vk.com/images/camera_200.png', // дефолтная заглушка-аватарка
+        });
+      // }
       setPopout(null);
     }    
     fetchData();

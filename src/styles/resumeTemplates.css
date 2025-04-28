@@ -1,0 +1,43 @@
+.resume-classic {
+  padding: 20px;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: Georgia, serif;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.resume-modern {
+  padding: 20px;
+  background-color: #f9f9f9;
+  color: #222222;
+  font-family: Roboto, sans-serif;
+  border-radius: 10px;
+  font-size: 15px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+}
+
+.resume-creative {
+  padding: 20px;
+  background-color: #fff8f0;
+  color: #333333;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 15px;
+  border: 2px dashed #ffa07a;
+  border-radius: 16px;
+  line-height: 1.6;
+}
+
+.resume-business {
+  padding: 24px;
+  background-color: #e0e7ef;
+  color: #1a1a1a;
+  font-family: "Times New Roman", Times, serif;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+  border: 1px solid #d1d5db;
+}
