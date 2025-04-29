@@ -5,8 +5,10 @@ import { useState, useRef } from 'react';
 import html2pdf from 'html2pdf.js';
 import '../styles/resumeTemplates.css';
 import { useEffect } from 'react'; 
-import { FileTextIcon } from 'lucide-react';
 import { Snackbar } from '@vkontakte/vkui';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
+import { saveAs } from 'file-saver';
+import html2canvas from 'html2canvas';
 
 export const Resume = ({ id, fetchedUser }) => {
   const routeNavigator = useRouteNavigator();
@@ -19,6 +21,7 @@ export const Resume = ({ id, fetchedUser }) => {
   const [skills, setSkills] = useState('');
   const [photo, setPhoto] = useState('');
   const [snackbar, setSnackbar] = useState(null);
+  const [fileFormat, setFileFormat] = useState('pdf');
 
   useEffect(() => {
     if (fetchedUser?.photo_200) {
@@ -27,9 +30,98 @@ export const Resume = ({ id, fetchedUser }) => {
   }, [fetchedUser]);
 
   const [templateStyle, setTemplateStyle] = useState('classic');
-  const [errors, setErrors] = useState({}); // состояние ошибок
+  const [errors, setErrors] = useState({});
 
   const resumeRef = useRef(null);
+
+  const handleDownload = () => {
+    if (!validateFields()) {
+      alert('Пожалуйста, заполните все обязательные поля!');
+      return;
+    }
+  
+    if (fileFormat === 'pdf') {
+      downloadResume();
+    } else if (fileFormat === 'docx') {
+      downloadResumeDocx();
+    } else if (fileFormat === 'png') {
+      downloadResumePng();
+    }
+  };
+
+  const downloadResumePng = () => {
+    if (!resumeRef.current) return;
+  
+    html2canvas(resumeRef.current).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'resume.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+  
+      setSnackbar(
+        <Snackbar
+          onClose={() => setSnackbar(null)}
+          layout="vertical"
+        >
+          🖼️ Резюме успешно скачано в формате .png!
+        </Snackbar>
+      );
+    });
+  };  
+
+  const downloadResumeDocx = () => {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: fullName || 'Не указано',
+                  bold: true,
+                  size: 28,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              text: `Телефон: ${phone || 'Не указано'}`,
+              spacing: { after: 200 },
+            }),
+            new Paragraph({
+              text: `Образование: ${education || 'Не указано'}`,
+              spacing: { after: 200 },
+            }),
+            new Paragraph({
+              text: `Опыт работы: ${experience || 'Не указано'}`,
+              spacing: { after: 200 },
+            }),
+            aboutMe ? new Paragraph({
+              text: `О себе: ${aboutMe}`,
+              spacing: { after: 200 },
+            }) : null,
+            skills ? new Paragraph({
+              text: `Навыки: ${skills}`,
+            }) : null,
+          ].filter(Boolean),
+        },
+      ],
+    });
+  
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, "resume.docx");
+      setSnackbar(
+        <Snackbar
+          onClose={() => setSnackbar(null)}
+          layout="vertical"
+        >
+          📄 Резюме успешно скачано в формате .docx!
+        </Snackbar>
+      );
+    });
+  };
+  
 
   const downloadResume = () => {
     if (!validateFields()) {
@@ -73,7 +165,7 @@ export const Resume = ({ id, fetchedUser }) => {
   
     setErrors(newErrors);
   
-    return Object.keys(newErrors).length === 0; // если ошибок нет — всё ок
+    return Object.keys(newErrors).length === 0;
   };
   
 
@@ -83,26 +175,47 @@ export const Resume = ({ id, fetchedUser }) => {
         Конструктор Резюме
       </PanelHeader>
       {snackbar}
-      {/* Блок для скачивания */}
+
       <div ref={resumeRef} className={`resume-${templateStyle}`}>
         {photo && (
-          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <img
               src={photo}
               alt="Фото профиля"
-              style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }}
+              style={{ width: '110px', height: '110px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ccc' }}
             />
           </div>
         )}
-        <h2 style={{ textAlign: 'center' }}>{fullName || 'Не указано'}</h2>
-        <p><b>Телефон:</b> {phone || 'Не указано'}</p>
-        <p><b>Образование:</b> {education || 'Не указано'}</p>
-        <p><b>Опыт работы:</b> {experience || 'Не указано'}</p>
-        {aboutMe && <p><b>О себе:</b> {aboutMe}</p>}
-        {skills && <p><b>Навыки:</b> {skills}</p>}
+
+        <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>{fullName || 'Не указано'}</h2>
+
+        <hr style={{ margin: '20px 0', border: 0, borderTop: '1px solid #ddd' }} />
+
+        <p><strong>📞 Телефон:</strong> {phone || 'Не указано'}</p>
+        <p><strong>🎓 Образование:</strong> {education || 'Не указано'}</p>
+        <p><strong>💼 Опыт работы:</strong> {experience || 'Не указано'}</p>
+
+        {aboutMe && (
+          <>
+            <hr style={{ margin: '20px 0', border: 0, borderTop: '1px solid #ddd' }} />
+            <h3 style={{ marginBottom: '8px' }}>О себе</h3>
+            <p>{aboutMe}</p>
+          </>
+        )}
+
+        {skills && (
+          <>
+            <hr style={{ margin: '20px 0', border: 0, borderTop: '1px solid #ddd' }} />
+            <h3 style={{ marginBottom: '8px' }}>Навыки</h3>
+            <ul style={{ paddingLeft: '20px' }}>
+              {skills.split(',').map((skill, i) => (
+                <li key={i}>{skill.trim()}</li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
 
-      {/* Форма для заполнения */}
       <Group>
       <FormItem top="Фотография" status={errors.photo ? 'error' : 'default'} bottom={errors.photo}>
         <input
@@ -113,7 +226,7 @@ export const Resume = ({ id, fetchedUser }) => {
             if (file) {
               const reader = new FileReader();
               reader.onloadend = () => {
-                setPhoto(reader.result); // сохраняем в состояние
+                setPhoto(reader.result);
               };
               reader.readAsDataURL(file);
             }
@@ -181,9 +294,21 @@ export const Resume = ({ id, fetchedUser }) => {
         </select>
       </FormItem>
 
+      <FormItem top="Выберите формат файла">
+        <select
+          value={fileFormat}
+          onChange={(e) => setFileFormat(e.target.value)}
+          style={{ width: '100%', padding: '8px', borderRadius: '6px' }}
+        >
+          <option value="pdf">PDF</option>
+          <option value="docx">DOCX</option>
+          <option value="png">PNG</option>
+        </select>
+      </FormItem>
+
       <FormItem>
-        <Button size="l" mode="primary" stretched onClick={downloadResume} before={<FileTextIcon size={20} />}>
-          Скачать резюме (PDF)
+        <Button size="l" mode="primary" stretched onClick={handleDownload}>
+          📄 Скачать резюме
         </Button>
       </FormItem>
 

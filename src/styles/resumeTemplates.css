@@ -1,43 +1,47 @@
 .resume-classic {
-  padding: 20px;
   background-color: #ffffff;
   color: #000000;
-  font-family: Georgia, serif;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 30px;
   border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.5;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  width: 100%;
 }
 
 .resume-modern {
-  padding: 20px;
-  background-color: #f9f9f9;
-  color: #222222;
-  font-family: Roboto, sans-serif;
-  border-radius: 10px;
+  background-color: #f7f9fc;
+  color: #1a1a1a;
+  font-family: 'Roboto', sans-serif;
   font-size: 15px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
+  line-height: 1.7;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
 }
 
 .resume-creative {
-  padding: 20px;
-  background-color: #fff8f0;
+  background-color: #fff3e0;
   color: #333333;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  font-size: 15px;
-  border: 2px dashed #ffa07a;
-  border-radius: 16px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 16px;
   line-height: 1.6;
+  padding: 30px;
+  border: 3px dashed #ff9800;
+  border-radius: 20px;
+  width: 100%;
 }
 
 .resume-business {
-  padding: 24px;
-  background-color: #e0e7ef;
-  color: #1a1a1a;
-  font-family: "Times New Roman", Times, serif;
-  border-radius: 6px;
+  background-color: #eef2f5;
+  color: #111111;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 15px;
-  font-weight: 500;
   line-height: 1.7;
-  border: 1px solid #d1d5db;
+  padding: 32px;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  width: 100%;
 }

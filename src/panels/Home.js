@@ -8,7 +8,7 @@ export const Home = ({ id, fetchedUser }) => {
 
   return (
     <Panel id={id}>
-      <PanelHeader>Главная</PanelHeader>
+      <PanelHeader>Конструктор Резюме</PanelHeader>
       {fetchedUser && (
         <Group header={<Header size="s">Данные пользователя</Header>}>
           <Cell before={photo_200 && <Avatar src={photo_200} />} subtitle={city?.title}>

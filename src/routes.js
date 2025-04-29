@@ -17,8 +17,8 @@ export const DEFAULT_VIEW_PANELS = {
 export const routes = RoutesConfig.create([
   createRoot(DEFAULT_ROOT, [
     createView(DEFAULT_VIEW, [
-      createPanel(DEFAULT_VIEW_PANELS.HOME, '/', []),             // домашняя страница
-      createPanel(DEFAULT_VIEW_PANELS.RESUME, '/resume', []),      // страница конструктора резюме
+      createPanel(DEFAULT_VIEW_PANELS.HOME, '/', []),
+      createPanel(DEFAULT_VIEW_PANELS.RESUME, '/resume', []),
     ]),
   ]),
 ]);

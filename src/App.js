@@ -4,7 +4,7 @@ import { View, SplitLayout, SplitCol, ScreenSpinner } from '@vkontakte/vkui';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 
 import { Home, Resume } from './panels';
-import { DEFAULT_VIEW, DEFAULT_VIEW_PANELS } from './routes';  // <--- добавил DEFAULT_VIEW
+import { DEFAULT_VIEW, DEFAULT_VIEW_PANELS } from './routes';
 
 export const App = () => {
   const { view: activeView = DEFAULT_VIEW, panel: activePanel = DEFAULT_VIEW_PANELS.HOME } = useActiveVkuiLocation(); // <--- учтено и view, и panel
@@ -13,19 +13,18 @@ export const App = () => {
 
   useEffect(() => {
     async function fetchData() {
-      // try {
-      //   const user = await bridge.send('VKWebAppGetUserInfo');
-      //   setUser(user);
-      // } catch (error) {
-        // Если не удалось получить данные от ВК — используем фейкового пользователя
+      try {
+        const user = await bridge.send('VKWebAppGetUserInfo');
+        setUser(user);
+      } catch (error) {
         setUser({
           id: 123456789,
           first_name: 'Иван',
           last_name: 'Иванов',
           city: { title: 'Москва' },
-          photo_200: 'https://vk.com/images/camera_200.png', // дефолтная заглушка-аватарка
+          photo_200: 'https://vk.com/images/camera_200.png',
         });
-      // }
+      }
       setPopout(null);
     }    
     fetchData();
